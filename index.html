@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For My Lovelove ❤️</title>
     <style>
+        /* 1. BSIT CSS RESET - Ensures no scrolling or weird margins */
         * {
             margin: 0;
             padding: 0;
@@ -20,7 +21,8 @@
             align-items: center;
             justify-content: center;
             background: radial-gradient(circle, #fff5f7 0%, #ffdee5 100%);
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            touch-action: manipulation; /* Optimizes for mobile taps */
         }
 
         .container {
@@ -31,7 +33,7 @@
             padding: 20px;
         }
 
-        /* GIF Styling */
+        /* 2. GIF/IMAGE CONTAINER */
         .gif-container {
             height: 200px;
             display: flex;
@@ -42,54 +44,65 @@
 
         img {
             max-height: 100%;
-            border-radius: 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
         h1 {
             color: #d32f2f;
             font-size: 1.8rem;
             margin-bottom: 40px;
+            min-height: 60px; /* Prevents text jump */
         }
 
+        /* 3. BUTTONS LAYOUT */
         .btn-group {
-            position: relative; /* Context for the jumping button */
+            position: relative; 
             display: flex;
             justify-content: center;
-            gap: 30px;
+            align-items: center;
+            gap: 20px;
             width: 100%;
-            height: 50px;
+            height: 60px;
         }
 
         button {
-            padding: 12px 25px;
-            font-size: 1.1rem;
+            padding: 15px 30px;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
             border: none;
-            border-radius: 12px;
-            transition: 0.2s;
-            white-space: nowrap;
+            border-radius: 15px;
+            transition: transform 0.1s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         #yesBtn {
             background-color: #ff4081;
             color: white;
-            z-index: 1; /* Stay behind the No button if they cross */
+            z-index: 1;
         }
 
         #noBtn {
             background-color: #546e7a;
             color: white;
-            position: relative; /* Starts relative, then JS makes it absolute */
-            z-index: 10;
+            position: relative; /* Starts side-by-side */
+            z-index: 100;
         }
 
         #message {
             display: none;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: #c2185b;
             font-weight: bold;
             line-height: 1.4;
+            animation: heartBeat 1.2s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -104,35 +117,47 @@
 
         <div class="btn-group">
             <button id="yesBtn" onclick="celebrate()">Yes!</button>
-            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+            <button id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">No</button>
         </div>
         
-        <div id="message">Yeheeey! <br> I love you so muuuuch 🥰🌹</div>
+        <div id="message">Yeheeey!! <br> I love you so muuuuch~ 🥰🌹</div>
     </div>
 
     <script>
         function moveButton() {
             const btn = document.getElementById('noBtn');
             
-            // Switch to absolute positioning only when she tries to click it
+            // On first interaction, switch to fixed positioning
             btn.style.position = 'fixed';
             
-            // Stay within screen bounds
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            // Screen boundaries
+            const padding = 20;
+            const maxX = window.innerWidth - btn.offsetWidth - padding;
+            const maxY = window.innerHeight - btn.offsetHeight - padding;
             
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            // Random coordinates
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
         }
 
         function celebrate() {
+            // Hide UI elements
             document.getElementById('question').style.display = 'none';
             document.querySelector('.btn-group').style.display = 'none';
             
-            // Update GIF to a celebratory one
+            // Change GIF
             document.getElementById('mainGif').src = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZTkzbW96dDg4M21jbmNwajMyd2QxYTYxbDZmOTUyYXNlaXBjMDFpZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ANjMpBvC9LeRUopsoU/giphy.gif";
             
+            // Show Message
             document.getElementById('message').style.display = 'block';
+            
+            // Final IT touch - Confetti alert
+            setTimeout(() => {
+                alert("Yay! Can't wait for our date! ❤️");
+            }, 500);
         }
     </script>
 </body>
