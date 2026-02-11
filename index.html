@@ -2,68 +2,140 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Favorite Person</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Lovelove ❤️</title>
     <style>
+        /* Prevents all scrolling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden; /* This kills the scrollbars */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffebee;
-            text-align: center;
+            background: radial-gradient(circle, #fff5f7 0%, #ffdee5 100%);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-        h1 { color: #d32f2f; font-size: 2.5rem; }
-        .buttons { margin-top: 20px; position: relative; width: 300px; height: 100px; }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        img {
+            width: 250px;
+            max-width: 80%;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            height: 50px; /* Space for buttons */
+        }
+
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
             border: none;
-            border-radius: 50px;
-            transition: 0.3s;
+            border-radius: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        #yesBtn { background-color: #ff4081; color: white; margin-right: 10px; }
-        #noBtn {
-            background-color: #9e9e9e;
+
+        #yesBtn {
+            background-color: #ff4081;
             color: white;
-            position: absolute;
         }
-        #message { display: none; margin-top: 20px; font-size: 1.5rem; color: #c2185b; font-weight: bold; }
-        img { width: 200px; border-radius: 20px; margin-bottom: 20px; }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            background-color: #f50057;
+        }
+
+        #noBtn {
+            background-color: #546e7a;
+            color: white;
+            position: fixed; /* Allows it to move anywhere on screen */
+            z-index: 999;
+        }
+
+        #message {
+            display: none;
+            font-size: 1.8rem;
+            color: #c2185b;
+            animation: heartBeat 1.5s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
 
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v4aP0v0H5N2iI/giphy.gif" alt="Cute gif">
-    
-    <h1>Will you be my Valentine? ❤️</h1>
+    <div class="container" id="mainContainer">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v4aP0v0H5N2iI/giphy.gif" alt="Cute Valentine GIF">
+        <h1 id="question">Will you be my Valentine? ❤️</h1>
 
-    <div class="buttons">
-        <button id="yesBtn" onclick="celebrate()">Yes!</button>
-        <button id="noBtn" onmouseover="moveButton()">No</button>
+        <div class="btn-group">
+            <button id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        </div>
+        
+        <div id="message">Yeheeey! I love you so muuuuch! 🥰🌹</div>
     </div>
-
-    <div id="message">Yeheey! I love youuuu 🥰</div>
 
     <script>
         function moveButton() {
             const btn = document.getElementById('noBtn');
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+            
+            // Calculate random positions within the visible window
+            // Subtracting button size so it doesn't go off-edge
+            const padding = 50;
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
+            
+            btn.style.left = Math.max(padding, x) + 'px';
+            btn.style.top = Math.max(padding, y) + 'px';
         }
 
         function celebrate() {
+            // Hide the buttons and question
+            document.getElementById('question').style.display = 'none';
+            document.querySelector('.btn-group').style.display = 'none';
+            
+            // Change the image to something more celebratory
+            document.querySelector('img').src = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmg2NXFjZDhhN2IzNmU0dmYzdXdzcW05cms2eXBjbG1iNTR2MzEydSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ANjMpBvC9LeRUopsoU/giphy.gif";
+            
+            // Show the final message
             document.getElementById('message').style.display = 'block';
-            document.querySelector('.buttons').style.display = 'none';
-            document.querySelector('h1').innerText = "It's a Date! ✨";
-            // Simple alert or you can add confetti JS here!
-            alert("Check your messages, I'm taking you out! 🌹");
+            
+            // Logic for a simple BSIT student flex: console log
+            console.log("Mission Accomplished: Valentine Secured.");
         }
     </script>
 </body>
