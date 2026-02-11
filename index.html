@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Lovelove ❤️</title>
+    <title>For My Lovelove ❤️</title>
     <style>
-        /* Prevents all scrolling */
         * {
             margin: 0;
             padding: 0;
@@ -15,42 +14,50 @@
         body {
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* This kills the scrollbars */
+            overflow: hidden; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background: radial-gradient(circle, #fff5f7 0%, #ffdee5 100%);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .container {
             text-align: center;
             z-index: 10;
+            width: 100%;
+            max-width: 400px;
             padding: 20px;
         }
 
-        img {
-            width: 250px;
-            max-width: 80%;
-            border-radius: 20px;
+        /* GIF Styling */
+        .gif-container {
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        img {
+            max-height: 100%;
+            border-radius: 15px;
         }
 
         h1 {
             color: #d32f2f;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            font-size: 1.8rem;
+            margin-bottom: 40px;
         }
 
         .btn-group {
+            position: relative; /* Context for the jumping button */
             display: flex;
-            gap: 20px;
             justify-content: center;
-            align-items: center;
-            height: 50px; /* Space for buttons */
+            gap: 30px;
+            width: 100%;
+            height: 50px;
         }
 
         button {
@@ -60,45 +67,39 @@
             cursor: pointer;
             border: none;
             border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            white-space: nowrap;
         }
 
         #yesBtn {
             background-color: #ff4081;
             color: white;
-        }
-
-        #yesBtn:hover {
-            transform: scale(1.1);
-            background-color: #f50057;
+            z-index: 1; /* Stay behind the No button if they cross */
         }
 
         #noBtn {
             background-color: #546e7a;
             color: white;
-            position: fixed; /* Allows it to move anywhere on screen */
-            z-index: 999;
+            position: relative; /* Starts relative, then JS makes it absolute */
+            z-index: 10;
         }
 
         #message {
             display: none;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: #c2185b;
-            animation: heartBeat 1.5s infinite;
-        }
-
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            font-weight: bold;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="mainContainer">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v4aP0v0H5N2iI/giphy.gif" alt="Cute Valentine GIF">
+    <div class="container">
+        <div class="gif-container">
+            <img id="mainGif" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Two%20Hearts.png" alt="Hearts">
+        </div>
+        
         <h1 id="question">Will you be my Valentine? ❤️</h1>
 
         <div class="btn-group">
@@ -106,36 +107,32 @@
             <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
         </div>
         
-        <div id="message">Yeheeey! I love you so muuuuch! 🥰🌹</div>
+        <div id="message">Yeheeey! <br> I love you so muuuuch 🥰🌹</div>
     </div>
 
     <script>
         function moveButton() {
             const btn = document.getElementById('noBtn');
             
-            // Calculate random positions within the visible window
-            // Subtracting button size so it doesn't go off-edge
-            const padding = 50;
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
+            // Switch to absolute positioning only when she tries to click it
+            btn.style.position = 'fixed';
             
-            btn.style.left = Math.max(padding, x) + 'px';
-            btn.style.top = Math.max(padding, y) + 'px';
+            // Stay within screen bounds
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
         }
 
         function celebrate() {
-            // Hide the buttons and question
             document.getElementById('question').style.display = 'none';
             document.querySelector('.btn-group').style.display = 'none';
             
-            // Change the image to something more celebratory
-            document.querySelector('img').src = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmg2NXFjZDhhN2IzNmU0dmYzdXdzcW05cms2eXBjbG1iNTR2MzEydSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ANjMpBvC9LeRUopsoU/giphy.gif";
+            // Update GIF to a celebratory one
+            document.getElementById('mainGif').src = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZTkzbW96dDg4M21jbmNwajMyd2QxYTYxbDZmOTUyYXNlaXBjMDFpZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ANjMpBvC9LeRUopsoU/giphy.gif";
             
-            // Show the final message
             document.getElementById('message').style.display = 'block';
-            
-            // Logic for a simple BSIT student flex: console log
-            console.log("Mission Accomplished: Valentine Secured.");
         }
     </script>
 </body>
